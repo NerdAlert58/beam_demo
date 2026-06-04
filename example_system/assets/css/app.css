@@ -1,36 +1,118 @@
-/* This file is for your main application css. */
+/* Main application stylesheet — modernized for sharpness and legibility. */
 
-@import "../../deps/phoenix_live_view/assets/css/live_view.css";
+:root {
+  --bg: #0b0d10;
+  --bg-elev: #14181d;
+  --fg: #e7ecf2;
+  --fg-muted: #9aa4b2;
+  --accent: #4f8cff;
+  --accent-strong: #80aaff;
+  --border: #232a33;
+  --highlight: #1f2a3a;
+  --mono: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
+}
 
-body, input {
-  font-size: 30px !important;
-  font-family: "Courier new";
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f7f8fa;
+    --bg-elev: #ffffff;
+    --fg: #11161c;
+    --fg-muted: #5b6473;
+    --accent: #2563eb;
+    --accent-strong: #1d4ed8;
+    --border: #e3e7ed;
+    --highlight: #eef2ff;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+input, button {
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--fg);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+input:focus, button:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+button {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  border-color: var(--accent-strong);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
 }
 
 .mainGrid {
   display: grid;
-  grid-row-gap: 20px;
+  grid-row-gap: 24px;
   grid-template-columns: 100%;
   justify-items: center;
 }
 
 .form {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin: 0;
 }
 
 .loadGrid {
   display: grid;
-  grid-row-gap: 2px;
-  grid-column-gap: 1ch;
-  grid-template-columns: 50% 50%;
-  font-size: 30px !important;
-  width:70%;
-  margin: auto;
+  grid-row-gap: 10px;
+  grid-column-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: min(720px, 90%);
+  margin: 0 auto;
+  padding: 20px 24px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-family: var(--mono);
 }
 
 .loadGrid form {
-  justify-self: right;
+  justify-self: end;
 }
 
 .loadGrid form input {
@@ -44,62 +126,108 @@ body, input {
 
 .chartsGrid {
   display: grid;
-  grid-template-columns: 50% 50%;
-  font-size: 30px !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
   justify-items: center;
-  height: 100px;
-  width: 90%;
+  width: 100%;
+  padding: 16px 0;
 }
 
 .graphGrid {
   display: grid;
   grid-template-columns: 100%;
   justify-items: center;
+  width: 100%;
 }
 
 .highlight {
-  background-color: lightgray;
+  background-color: var(--highlight);
+  border-radius: 6px;
+  padding: 2px 6px;
 }
 
 .paragraph {
-  padding-top: 30px;
+  padding-top: 24px;
+  color: var(--fg-muted);
 }
 
 .topDashboard {
   display: grid;
   grid-template-columns: fit-content(40%) fit-content(60%) auto;
-  width:100%;
-  column-gap: 30px;
-  margin: auto;
-  justify-items: left;
+  width: 100%;
+  column-gap: 32px;
+  align-items: start;
+  padding: 20px 24px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  justify-items: start;
 }
 
 .processesGrid {
-  font-size: 20px !important;
+  font-family: var(--mono);
+  font-size: 0.95rem;
   display: grid;
   grid-template-columns: fit-content(70%) fit-content(33%) fit-content(33%);
-  column-gap: 30px;
-  margin: auto;
-  justify-items: left;
+  column-gap: 28px;
+  margin: 0;
+  justify-items: start;
 }
 
 .header {
   justify-self: center;
-  font-weight: bold;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
 }
 
 .cpu {
+  font-family: var(--mono);
   text-align: right;
-  justify-self: right;
+  justify-self: end;
   min-width: 4ch;
+  font-variant-numeric: tabular-nums;
 }
 
 .output {
-  font-size: 16px;
-  font-weight: lighter;
-  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin-top: 6px;
+  color: var(--fg-muted);
 }
 
 .sumForm, .sumForm input {
-  font-size: 30px !important;
+  font-family: var(--mono);
+  font-size: 1rem;
+}
+
+/* Crisp SVG rendering for charts/graphs. */
+svg {
+  shape-rendering: geometricPrecision;
+}
+
+/* Subtle, modern phx-* connection indicators (LV 1.0 hooks). */
+.phx-no-feedback.invalid-feedback,
+.phx-no-feedback .invalid-feedback {
+  display: none;
+}
+
+.phx-click-loading {
+  opacity: 0.6;
+  transition: opacity 100ms ease;
+}
+
+.phx-loading {
+  cursor: progress;
+}
+
+.phx-disconnected {
+  cursor: wait;
+}
+
+.phx-disconnected * {
+  pointer-events: none;
 }

@@ -5,15 +5,21 @@ defmodule ExampleSystem.Mixfile do
     [
       app: :example_system,
       version: "0.0.1",
-      elixir: "~> 1.4",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      preferred_cli_env: [release: :prod, upgrade: :prod],
+      preferred_cli_env: [release: :prod],
+      releases: [
+        system: [
+          include_executables_for: [:unix],
+          applications: [example_system: :permanent]
+        ]
+      ],
       aliases: [
         release: ["example_system.build_assets", "phx.digest", "release"],
-        upgrade: "example_system.upgrade"
+        "assets.deploy": ["esbuild default --minify", "tailwind default --minify", "phx.digest"]
       ]
     ]
   end
@@ -37,24 +43,25 @@ defmodule ExampleSystem.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, github: "phoenixframework/phoenix", branch: "v1.4", override: true},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_html, "~> 2.10"},
-      {:ecto, "~> 3.0"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:plug_cowboy, "~> 2.0"},
-      {:plug, "~> 1.7"},
-      {:recon, "~> 2.0"},
-      {:distillery, "~> 2.0"},
-      {:jason, "~> 1.0"},
-      {:swarm, "~> 3.0"},
+      {:phoenix, "~> 1.7.14"},
+      {:phoenix_pubsub, "~> 2.1"},
+      {:phoenix_html, "~> 4.1"},
+      {:ecto, "~> 3.12"},
+      {:phoenix_ecto, "~> 4.6"},
+      {:phoenix_live_reload, "~> 1.5", only: :dev},
+      {:phoenix_live_view, "~> 1.0"},
+      {:gettext, "~> 0.26"},
+      {:plug_cowboy, "~> 2.7"},
+      {:plug, "~> 1.16"},
+      {:recon, "~> 2.5"},
+      {:jason, "~> 1.4"},
+      {:swarm, "~> 3.4"},
+      {:parent, "~> 0.12"},
+      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:load_control, path: "../load_control"},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
-      {:parent, "~> 0.6"},
-      {:stream_data, "~> 0.4.3", only: :test},
-      {:assertions, "~> 0.13", only: :test}
+      {:stream_data, "~> 1.1", only: :test},
+      {:assertions, "~> 0.20", only: :test}
     ]
   end
 end
