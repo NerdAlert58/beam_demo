@@ -32,16 +32,4 @@ defmodule ExampleSystemWeb.Endpoint do
     signing_salt: "Xl786J7N"
 
   plug ExampleSystemWeb.Router
-
-  @doc """
-  Callback invoked for dynamically configuring the endpoint.
-
-  It receives the endpoint configuration and checks if
-  configuration should be loaded from the system environment.
-  """
-  def init(_key, config), do: {:ok, put_in(config[:http][:port], port())}
-
-  defp port() do
-    if node() == :"node2@127.0.0.1", do: 4001, else: 4000
-  end
 end
