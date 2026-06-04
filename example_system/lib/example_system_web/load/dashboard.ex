@@ -2,7 +2,7 @@ defmodule ExampleSystemWeb.Load.Dashboard do
   use Phoenix.LiveView
 
   @impl Phoenix.LiveView
-  def render(assigns), do: ExampleSystemWeb.Load.View.render("dashboard.html", assigns)
+  def render(assigns), do: ExampleSystemWeb.Load.View.render("index.html", assigns)
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do

@@ -2,7 +2,7 @@ defmodule ExampleSystemWeb.Math.Sum do
   use Phoenix.LiveView
 
   @impl Phoenix.LiveView
-  def render(assigns), do: ExampleSystemWeb.Math.View.render("sum.html", assigns)
+  def render(assigns), do: ExampleSystemWeb.Math.View.render("index.html", assigns)
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket), do: {:ok, assign(socket, operations: [], data: data())}
