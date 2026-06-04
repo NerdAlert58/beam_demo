@@ -61,6 +61,10 @@ defmodule ExampleSystem.Mixfile do
       {:recon, "~> 2.5"},
       {:jason, "~> 1.4"},
       {:swarm, "~> 3.4"},
+      # Override swarm's transitive libring ~> 1.0 to pick up 1.7.0, which replaced
+      # the deprecated :simple_one_for_one supervisor with DynamicSupervisor and
+      # silences an IO.warn fired at app boot on Elixir 1.19+.
+      {:libring, "~> 1.7", override: true},
       {:parent, "~> 0.12"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:load_control, path: "../load_control"},
