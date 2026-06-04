@@ -5,8 +5,8 @@ defmodule ExampleSystemWeb.Services.Dashboard do
   def render(assigns), do: ExampleSystemWeb.Services.View.render("dashboard.html", assigns)
 
   @impl Phoenix.LiveView
-  def mount(_session, socket) do
-    if socket.connected?, do: :timer.send_interval(100, :refresh_state)
+  def mount(_params, _session, socket) do
+    if connected?(socket), do: :timer.send_interval(100, :refresh_state)
     {:ok, refresh_state(assign(socket, response: nil))}
   end
 
@@ -20,6 +20,7 @@ defmodule ExampleSystemWeb.Services.Dashboard do
     {:noreply, assign(socket, response: ExampleSystem.Service.invoke(name))}
   end
 
+  @impl Phoenix.LiveView
   def handle_info(:refresh_state, socket), do: {:noreply, refresh_state(socket)}
 
   defp refresh_state(socket), do: assign(socket, nodes: nodes())

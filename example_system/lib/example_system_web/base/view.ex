@@ -7,16 +7,11 @@ defmodule ExampleSystemWeb.Base.View do
             unquote(opts)
           )
 
-      # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
-      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
+      import Phoenix.HTML
+      use PhoenixHTMLHelpers
 
-      # Use all HTML functionality (forms, tags, etc)
-      use Phoenix.HTML
-
-      import ExampleSystemWeb.Router.Helpers
       import ExampleSystemWeb.ErrorHelpers
-      import ExampleSystemWeb.Gettext
+      use Gettext, backend: ExampleSystemWeb.Gettext
     end
   end
 end

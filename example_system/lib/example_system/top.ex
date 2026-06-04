@@ -16,7 +16,7 @@ defmodule ExampleSystem.Top do
 
   @impl GenServer
   def handle_call(:subscribe, {pid, _ref}, state) do
-    unless Parent.GenServer.child?(:top), do: start_top()
+    unless Parent.child?(:top), do: start_top()
     Process.monitor(pid)
     {:reply, state.top, update_in(state.subscribers, &MapSet.put(&1, pid))}
   end
@@ -26,13 +26,15 @@ defmodule ExampleSystem.Top do
     do: {:noreply, update_in(state.subscribers, &MapSet.delete(&1, pid))}
 
   @impl Parent.GenServer
-  def handle_child_terminated(:top, _meta, _pid, _reason, state) do
+  def handle_stopped_children(%{top: _info}, state) do
     if MapSet.size(state.subscribers) > 0, do: start_top()
     {:noreply, state}
   end
 
+  def handle_stopped_children(_info, state), do: {:noreply, state}
+
   defp start_top() do
-    Parent.GenServer.start_child(%{
+    Parent.start_child(%{
       id: :top,
       start: {Task, :start_link, [&top/0]},
       shutdown: :brutal_kill,

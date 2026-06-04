@@ -5,12 +5,13 @@ defmodule ExampleSystemWeb.Math.Sum do
   def render(assigns), do: ExampleSystemWeb.Math.View.render("sum.html", assigns)
 
   @impl Phoenix.LiveView
-  def mount(_session, socket), do: {:ok, assign(socket, operations: [], data: data())}
+  def mount(_params, _session, socket), do: {:ok, assign(socket, operations: [], data: data())}
 
   @impl Phoenix.LiveView
   def handle_event("submit", %{"data" => %{"to" => str_input}}, socket),
     do: {:noreply, start_sum(socket, str_input)}
 
+  @impl Phoenix.LiveView
   def handle_info({:sum, pid, sum}, socket),
     do: {:noreply, update(socket, :operations, &set_result(&1, pid, sum))}
 

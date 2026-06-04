@@ -1,16 +1,19 @@
 defmodule ExampleSystem.Mixfile do
   use Mix.Project
 
+  def cli do
+    [preferred_envs: [release: :prod]]
+  end
+
   def project do
     [
       app: :example_system,
       version: "0.0.1",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      preferred_cli_env: [release: :prod],
       releases: [
         system: [
           include_executables_for: [:unix],
@@ -44,6 +47,8 @@ defmodule ExampleSystem.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.7.14"},
+      {:phoenix_view, "~> 2.0"},
+      {:phoenix_html_helpers, "~> 1.0"},
       {:phoenix_pubsub, "~> 2.1"},
       {:phoenix_html, "~> 4.1"},
       {:ecto, "~> 3.12"},
