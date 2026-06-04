@@ -1,14 +1,18 @@
 defmodule ExampleSystemWeb.SumTest do
   use ExUnit.Case, async: true
   use ExUnitProperties
+  import Phoenix.ConnTest
   import Phoenix.LiveViewTest
   import Assertions
   alias ExampleSystemWeb.Math.Sum
 
+  @endpoint ExampleSystemWeb.Endpoint
+
   property "flow for valid input" do
-    check all number <- valid_input(), expected_sum = Enum.sum(1..number) do
-      {:ok, view, _html} = mount_disconnected(ExampleSystemWeb.Endpoint, Sum, session: %{})
-      {:ok, view, _html} = mount(view)
+    # 13 is intentionally poison for ExampleSystem.Math (raises);
+    # the Sum LiveView surfaces that as :error, not the computed sum.
+    check all number <- valid_input(), number != 13, expected_sum = Enum.sum(1..number) do
+      {:ok, view, _html} = live_isolated(build_conn(), Sum, session: %{})
 
       html = render_submit(view, "submit", %{"data" => %{"to" => to_string(number)}})
       assert String.contains?(html, "∑(1..#{number}) = calculating")
@@ -21,8 +25,7 @@ defmodule ExampleSystemWeb.SumTest do
 
   property "reporting errors for invalid input" do
     check all input <- invalid_input() do
-      {:ok, view, _html} = mount_disconnected(ExampleSystemWeb.Endpoint, Sum, session: %{})
-      {:ok, view, _html} = mount(view)
+      {:ok, view, _html} = live_isolated(build_conn(), Sum, session: %{})
 
       html = render_submit(view, "submit", %{"data" => %{"to" => to_string(input)}})
       assert String.contains?(html, "∑(1..#{input}) = invalid input")
@@ -30,7 +33,7 @@ defmodule ExampleSystemWeb.SumTest do
   end
 
   defp valid_input(), do: positive_integer()
-  defp invalid_input(), do: one_of([non_positive_integer(), invalid_string()])
+  defp invalid_input(), do: one_of([negative_or_zero_integer(), invalid_string()])
 
   defp invalid_string() do
     one_of([
@@ -54,11 +57,11 @@ defmodule ExampleSystemWeb.SumTest do
   end
 
   defp float_string() do
-    gen all integer_part <- non_negative_integer(),
-            decimal_part <- non_negative_integer(),
+    gen all integer_part <- non_negative_int(),
+            decimal_part <- non_negative_int(),
             do: "#{integer_part}.#{decimal_part}"
   end
 
-  defp non_negative_integer(), do: map(positive_integer(), &(&1 - 1))
-  defp non_positive_integer(), do: map(non_negative_integer(), &(-&1))
+  defp non_negative_int(), do: map(positive_integer(), &(&1 - 1))
+  defp negative_or_zero_integer(), do: map(non_negative_int(), &(-&1))
 end
