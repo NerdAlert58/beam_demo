@@ -5,18 +5,18 @@
 </div>
 
 <ul class="paragraph">
-  <%= Enum.map(@nodes, fn node -> %>
+  <%= for node <- @nodes do %>
     <li>
       <%= node.name %>
       <ul>
-        <%= Enum.map(node.services, fn service -> %>
+        <%= for service <- node.services do %>
           <li>
             <%= link(service, to: "#", "phx-click": "invoke_#{service}") %>
           </li>
-        <% end) %>
+        <% end %>
       </ul>
     </li>
-  <% end) %>
+  <% end %>
 </ul>
 
 <%= if @response != nil do %>

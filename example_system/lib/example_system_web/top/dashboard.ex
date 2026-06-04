@@ -5,19 +5,20 @@ defmodule ExampleSystemWeb.Top.Dashboard do
   def render(assigns), do: ExampleSystemWeb.Top.View.render("dashboard.html", assigns)
 
   @impl Phoenix.LiveView
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     {:ok, assign(socket, top: ExampleSystem.Top.subscribe(), output: "")}
   end
 
   @impl Phoenix.LiveView
   def handle_event("process_info", pid_str, socket),
-    do: {:noreply, assign(socket, :output, process_info(:erlang.list_to_pid('<#{pid_str}>')))}
+    do: {:noreply, assign(socket, :output, process_info(:erlang.list_to_pid(~c"<#{pid_str}>")))}
 
   def handle_event("process_kill", pid_str, socket) do
-    Process.exit(:erlang.list_to_pid('<#{pid_str}>'), :kill)
+    Process.exit(:erlang.list_to_pid(~c"<#{pid_str}>"), :kill)
     {:noreply, socket}
   end
 
+  @impl Phoenix.LiveView
   def handle_info({:top, top}, socket), do: {:noreply, assign(socket, top: top)}
 
   defp process_info(pid) do

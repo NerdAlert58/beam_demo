@@ -5,7 +5,7 @@ defmodule ExampleSystemWeb.Load.Dashboard do
   def render(assigns), do: ExampleSystemWeb.Load.View.render("dashboard.html", assigns)
 
   @impl Phoenix.LiveView
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
        load: changeset(LoadControl.load()),
@@ -61,6 +61,7 @@ defmodule ExampleSystemWeb.Load.Dashboard do
     {:noreply, assign(socket, :highlighted, highlighted)}
   end
 
+  @impl Phoenix.LiveView
   def handle_info({:metrics, metrics}, socket), do: {:noreply, assign(socket, :metrics, metrics)}
 
   def handle_info(:clear_history, socket) do
