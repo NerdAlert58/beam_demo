@@ -1,7 +1,19 @@
-import css from '../css/app.css'
+import "../css/app.css"
 
 import "phoenix_html"
-import LiveSocket from "phoenix_live_view"
+import { Socket } from "phoenix"
+import { LiveSocket } from "phoenix_live_view"
 
-let liveSocket = new LiveSocket("/live")
+const csrfToken = document
+  .querySelector("meta[name='csrf-token']")
+  ?.getAttribute("content")
+
+const liveSocket = new LiveSocket("/live", Socket, {
+  longPollFallbackMs: 2500,
+  params: { _csrf_token: csrfToken }
+})
+
 liveSocket.connect()
+
+// Expose for debugging in the console
+window.liveSocket = liveSocket
