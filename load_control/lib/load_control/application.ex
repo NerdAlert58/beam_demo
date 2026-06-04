@@ -3,10 +3,10 @@ defmodule LoadControl.Application do
 
   def start(_type, _args) do
     children = [
+      LoadControl,
       LoadControl.Stats,
       LoadControl.SchedulerMonitor,
-      LoadControl.Workers,
-      LoadControl
+      LoadControl.Workers
     ]
 
     opts = [strategy: :one_for_one, name: LoadControl.Supervisor]

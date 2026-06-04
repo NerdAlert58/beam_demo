@@ -3,7 +3,11 @@ defmodule ExampleSystemWeb.Endpoint do
 
   socket "/live", Phoenix.LiveView.Socket
 
-  plug Plug.Static, at: "/", from: :example_system, gzip: false, only: ~w(css fonts images js favicon.ico robots.txt)
+  plug Plug.Static,
+    at: "/",
+    from: :example_system,
+    gzip: false,
+    only: ~w(assets fonts images favicon.ico robots.txt)
 
   if code_reloading? do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket

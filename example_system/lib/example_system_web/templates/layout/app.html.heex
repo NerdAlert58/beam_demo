@@ -6,16 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="csrf-token" content={Plug.CSRFProtection.get_csrf_token()}>
 
     <title>BEAM Demo · Soul of Erlang & Elixir</title>
     <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="<%= ExampleSystemWeb.Endpoint.static_path("/css/app.css") %>">
+    <link rel="stylesheet" href={ExampleSystemWeb.Endpoint.static_path("/assets/app.css")}>
+    <script defer type="text/javascript" src={ExampleSystemWeb.Endpoint.static_path("/assets/app.js")}></script>
   </head>
 
   <body>
     <div class="content">
-      <%= render @view_module, @view_template, assigns %>
+      <%= @inner_content %>
     </div>
-    <script src="<%= ExampleSystemWeb.Endpoint.static_path("/js/app.js") %>"></script>
   </body>
 </html>

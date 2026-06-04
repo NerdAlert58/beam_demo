@@ -21,8 +21,8 @@ defmodule ExampleSystem.Mixfile do
         ]
       ],
       aliases: [
-        release: ["example_system.build_assets", "phx.digest", "release"],
-        "assets.deploy": ["esbuild default --minify", "tailwind default --minify", "phx.digest"]
+        release: ["assets.deploy", "release"],
+        "assets.deploy": ["esbuild default --minify", "phx.digest"]
       ]
     ]
   end
@@ -63,7 +63,6 @@ defmodule ExampleSystem.Mixfile do
       {:swarm, "~> 3.4"},
       {:parent, "~> 0.12"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:load_control, path: "../load_control"},
       {:stream_data, "~> 1.1", only: :test},
       {:assertions, "~> 0.20", only: :test}
