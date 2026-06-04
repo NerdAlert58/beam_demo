@@ -34,22 +34,27 @@ Then, you can visit the following links:
 
 ## Demo
 
-Building and starting for production (in the background):
+Build a production release:
 
 ```
 cd example_system
-./rebuild.sh
-./_build/prod/rel/system/bin/system start
+MIX_ENV=prod mix release
 ```
 
-Open the remote console:
+Start the release in the background:
 
 ```
-./_build/prod/rel/system/bin/system remote_console
+./_build/prod/rel/system/bin/system daemon
 ```
 
-Hot upgrade with no downtime:
+Open a remote console:
 
 ```
-mix system.upgrade
+./_build/prod/rel/system/bin/system remote
+```
+
+Stop the release:
+
+```
+./_build/prod/rel/system/bin/system stop
 ```
