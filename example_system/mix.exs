@@ -65,7 +65,8 @@ defmodule ExampleSystem.Mixfile do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:load_control, path: "../load_control"},
       {:stream_data, "~> 1.1", only: :test},
-      {:assertions, "~> 0.20", only: :test}
+      {:assertions, "~> 0.20", only: :test},
+      {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end
 end

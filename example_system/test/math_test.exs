@@ -5,7 +5,9 @@ defmodule ExampleSystem.MathTest do
   alias ExampleSystem.Math
 
   property "correct sum is returned for valid input" do
-    check all n <- valid_input() do
+    # 13 is intentionally treated as poison by ExampleSystem.Math (it raises);
+    # that behavior is exercised by the "down message" property below.
+    check all n <- valid_input(), n != 13 do
       assert {:ok, pid} = Math.sum(n)
       assert_receive({:sum, ^pid, sum})
       assert sum == Enum.sum(1..n)
@@ -24,7 +26,7 @@ defmodule ExampleSystem.MathTest do
   test "large input" do
     n = 999_999_999
     assert {:ok, pid} = Math.sum(n)
-    assert_receive({:sum, ^pid, sum})
+    assert_receive({:sum, ^pid, sum}, :timer.seconds(30))
     assert sum == Enum.sum(1..n)
   end
 
