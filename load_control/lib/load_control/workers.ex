@@ -11,25 +11,27 @@ defmodule LoadControl.Workers do
         name: __MODULE__
       )
 
-  def start_worker(id), do: Supervisor.start_child(supervisor_name(rem(id, @shards) + 1), [id])
+  def start_worker(id),
+    do: DynamicSupervisor.start_child(supervisor_name(rem(id, @shards) + 1), {LoadControl.Worker, id})
 
   defp number_producer_supervisors(), do: Enum.map(1..@shards, &number_producer_sup/1)
 
   defp number_producer_sup(id),
     do:
-      Supervisor.Spec.supervisor(
-        Supervisor,
-        [
-          [LoadControl.Worker],
-          [
-            strategy: :simple_one_for_one,
-            name: supervisor_name(id),
-            max_restarts: 100_000_000,
-            max_seconds: 1
-          ]
-        ],
-        id: supervisor_name(id)
-      )
+      %{
+        id: supervisor_name(id),
+        start:
+          {DynamicSupervisor, :start_link,
+           [
+             [
+               strategy: :one_for_one,
+               name: supervisor_name(id),
+               max_restarts: 100_000_000,
+               max_seconds: 1
+             ]
+           ]},
+        type: :supervisor
+      }
 
   defp supervisor_name(id), do: Module.concat(__MODULE__.Supervisor, :"#{id}")
 
